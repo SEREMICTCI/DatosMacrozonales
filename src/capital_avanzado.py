@@ -5,7 +5,7 @@ import math_service as ms
 
 # Lectura de datos
 
-print('Leyendo datos ********')
+print('******** Leyendo datos ')
 
 #Ruta guardado
 path = r"H:/Mi unidad/Datos/Compilados/"
@@ -35,7 +35,7 @@ data2017 = pd.read_excel(path2017,header=2)
 path2016 = pathIni + r"\input\capitalHumano\bd_pac_2016_sies2016_v2.xlsx"
 data2016 = pd.read_excel(path2016,header=2)
 
-print('Cambiando nombre de columna Institución ********')
+print('******** Cambiando nombre de columna Institución ')
 
 # Cambio de nombre de columnas
 data2021 = data2021.rename(columns={'Unnamed: 1':'Institución'})
@@ -45,7 +45,21 @@ data2018 = data2018.rename(columns={'Unnamed: 1':'Institución'})
 data2017 = data2017.rename(columns={'Unnamed: 1':'Institución'})
 data2016 = data2016.rename(columns={'Unnamed: 1':'Institución'})
 
-print('Quitando espacios de extremos ********')
+data2021 = data2021.rename(columns={'Unnamed: 2':'Mujeres'})
+data2020 = data2020.rename(columns={'Unnamed: 2':'Mujeres'})
+data2019 = data2019.rename(columns={'Unnamed: 2':'Mujeres'})
+data2018 = data2018.rename(columns={'Unnamed: 2':'Mujeres'})
+data2017 = data2017.rename(columns={'Unnamed: 2':'Mujeres'})
+data2016 = data2016.rename(columns={'Unnamed: 2':'Mujeres'})
+
+data2021 = data2021.rename(columns={'Unnamed: 3':'Hombres'})
+data2020 = data2020.rename(columns={'Unnamed: 3':'Hombres'})
+data2019 = data2019.rename(columns={'Unnamed: 3':'Hombres'})
+data2018 = data2018.rename(columns={'Unnamed: 3':'Hombres'})
+data2017 = data2017.rename(columns={'Unnamed: 3':'Hombres'})
+data2016 = data2016.rename(columns={'Unnamed: 3':'Hombres'})
+
+print('******** Quitando espacios de extremos ')
 
 data2021['Institución'] = data2021['Institución'].str.strip()
 data2020['Institución'] = data2020['Institución'].str.strip()
@@ -54,7 +68,7 @@ data2018['Institución'] = data2018['Institución'].str.strip()
 data2017['Institución'] = data2017['Institución'].str.strip()
 data2016['Institución'] = data2016['Institución'].str.strip()
 
-print('Llevando a mayusculas ********')
+print('******** Llevando a mayusculas ')
 
 data2021['Institución'] = data2021['Institución'].str.upper()
 data2020['Institución'] = data2020['Institución'].str.upper()
@@ -63,14 +77,16 @@ data2018['Institución'] = data2018['Institución'].str.upper()
 data2017['Institución'] = data2017['Institución'].str.upper()
 data2016['Institución'] = data2016['Institución'].str.upper()
 
-print('Normalizando nombre de columnas ********')
+print('******** Normalizando nombre de columnas ')
 
-data2021MacrozonaUes = pd.concat([
-    data2021[data2021['Región de Arica y Parinacota'] > 0 ], # Región 15
-    data2021[data2021['Región de Tarapacá'] > 0 ],           # Región 1
-    data2021[data2021['Región de Antofagasta'] > 0 ],        # Región 2
-    data2021[data2021['Región de Atacama'] > 0 ]             # Región 3
-])
+# 2021
+data2021MacrozonaUes = data2021[
+    (data2021['Región de Arica y Parinacota'] > 0) |
+    (data2021['Región de Tarapacá']           > 0) |
+    (data2021['Región de Antofagasta']        > 0) |
+    (data2021['Región de Atacama']            > 0)
+]
+
 data2021MacrozonaUes = data2021MacrozonaUes.rename(columns={
     'Región de Arica y Parinacota':'Región 15',
     'Región de Tarapacá':'Región 1',
@@ -80,49 +96,54 @@ data2021MacrozonaUes = data2021MacrozonaUes.rename(columns={
 
 data2021MacrozonaUes = data2021MacrozonaUes.assign(año=2021)
 
-data2020MacrozonaUes = pd.concat([
-    data2020[data2020['Región 15'] > 0 ],
-    data2020[data2020['Región 1'] > 0 ],
-    data2020[data2020['Región 2'] > 0 ],
-    data2020[data2020['Región 3'] > 0 ]
-])
+# 2020
+data2020MacrozonaUes = data2020[
+    (data2020['Región 15']  > 0)  |
+    (data2020['Región 1']   > 0)  |
+    (data2020['Región 2']   > 0)  |
+    (data2020['Región 3']   > 0) 
+]
 data2020MacrozonaUes = data2020MacrozonaUes.assign(año=2020)
 
-data2019MacrozonaUes = pd.concat([
-    data2019[data2019['Región 15'] > 0 ],
-    data2019[data2019['Región 1'] > 0 ],
-    data2019[data2019['Región 2'] > 0 ],
-    data2019[data2019['Región 3'] > 0 ]
-])
+# 2019
+data2019MacrozonaUes = data2019[
+    (data2019['Región 15'] > 0) |
+    (data2019['Región 1'] > 0)  |
+    (data2019['Región 2'] > 0)  |
+    (data2019['Región 3'] > 0) 
+]
 data2019MacrozonaUes = data2019MacrozonaUes.assign(año=2019)
 
-data2018MacrozonaUes = pd.concat([
-    data2018[data2018['Región 15'] > 0 ],
-    data2018[data2018['Región 1'] > 0 ],
-    data2018[data2018['Región 2'] > 0 ],
-    data2018[data2018['Región 3'] > 0 ]
-])
+# 2018
+data2018MacrozonaUes = data2018[
+    (data2018['Región 15'] > 0) |
+    (data2018['Región 1'] > 0)  |
+    (data2018['Región 2'] > 0)  |
+    (data2018['Región 3'] > 0) 
+]
 data2018MacrozonaUes = data2018MacrozonaUes.assign(año=2018)
 
-data2017MacrozonaUes = pd.concat([
-    data2017[data2017['Región 15'] > 0 ],
-    data2017[data2017['Región 1'] > 0 ],
-    data2017[data2017['Región 2'] > 0 ],
-    data2017[data2017['Región 3'] > 0 ]
-])
+# 2017
+data2017MacrozonaUes = data2017[
+    (data2017['Región 15'] > 0) |
+    (data2017['Región 1'] > 0)  |
+    (data2017['Región 2'] > 0)  |
+    (data2017['Región 3'] > 0) 
+]
 data2017MacrozonaUes = data2017MacrozonaUes.assign(año=2017)
 
-data2016MacrozonaUes = pd.concat([
-    data2016[data2016['Región 15'] > 0 ],
-    data2016[data2016['Región 1'] > 0 ],
-    data2016[data2016['Región 2'] > 0 ],
-    data2016[data2016['Región 3'] > 0 ]
-])
+# 2016
+data2016MacrozonaUes = data2016[
+    (data2016['Región 15'] > 0) |
+    (data2016['Región 1'] > 0)  |
+    (data2016['Región 2'] > 0)  |
+    (data2016['Región 3'] > 0)
+]
 data2016MacrozonaUes = data2016MacrozonaUes.assign(año=2016)
 
 # Se buscan relaciones en nombres
 
-print('Buscando relaciones de nombres de institución ********')
+print('******** Buscando relaciones de nombres de institución ')
 
 dataMacrozonaUes = pd.concat([
     data2021MacrozonaUes,
@@ -136,10 +157,12 @@ dataMacrozonaUes = pd.concat([
 #resultMatcher =ms.matcher(dataMacrozonaUes['Institución'],dataMacrozonaUes['Institución'])
 #resultMatcher.to_excel(path+'result_matcher.xlsx')
 
-print('Seleccionando columnas ********')
+print('******** Seleccionando columnas ')
 
 dataMacrozonaUes = dataMacrozonaUes [[
     'Institución',
+    'Mujeres',
+    'Hombres',
     'Menos de 35',
     'Entre 35 y 44',
     'Entre 45 y 54',
@@ -168,6 +191,6 @@ dataMacrozonaUes = dataMacrozonaUes [[
     'año',
 ]]
 
-print('Escribiendo archivos ********')
+print('******** Escribiendo archivos ')
 
 dataMacrozonaUes.to_excel(path + "capital_avanzado.xlsx")
